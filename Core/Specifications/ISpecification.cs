@@ -1,0 +1,15 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
+using System.Text;
+
+namespace Core.Specifications
+{
+    // Creates a generic form which contains the criteria and includes
+    // Adds other functions such as paging and filtering
+    public interface ISpecification<T>
+    {
+        Expression<Func<T,bool>> Criteria { get; }
+        List<Expression<Func<T,object>>> Includes { get; }
+     }
+}
