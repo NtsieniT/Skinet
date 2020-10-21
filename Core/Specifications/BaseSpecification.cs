@@ -15,19 +15,59 @@ namespace Core.Specifications
             Expression<Func<T, bool>> criteria)
         {
             Criteria = criteria;
-            
+
         }
 
-        public Expression<Func<T, bool>> Criteria { get;}
+        public Expression<Func<T, bool>> Criteria { get; }
 
-        public List<Expression<Func<T, object>>> Includes { get; } = 
+        public List<Expression<Func<T, object>>> Includes { get; } =
             new List<Expression<Func<T, object>>>();
 
-        //Create a method to allow us to add Include statement to our include list
+        public Expression<Func<T, object>> OrderBy {get; private set;}
 
+        public Expression<Func<T, object>> OrderByDecending { get; private set; }
+
+
+        public int Take { get; private set; }
+
+        public int Skip { get; private set; }
+
+        public bool isPagingEnabled { get; private set; }
+
+        /*Create a method to allow us to add Include statement to our include list*/
         protected void AddInclude(Expression<Func<T, object>> includeExpression)
         {
             Includes.Add(includeExpression);
         }
+
+        /************************************************************************/
+
+
+
+        /**/
+        /*Methods for ordering normal and descending*/
+        protected void AddOrderBy(Expression<Func<T, object>> orderByExpression)
+        {
+            OrderBy = orderByExpression;
+        }
+
+        protected void AddOrderByDescending(Expression<Func<T, object>> orderByDescExpression)
+        {
+            OrderByDecending = orderByDescExpression;
+        }
+        /***************************************/
+
+
+
+
+        /* Methd used to apply pagination*/
+        protected void ApplyPaging(int skip, int take)
+        {
+            Skip = skip;
+            Take = take;
+            isPagingEnabled = true;
+        }
+        /*************************************/
+
     }
 }

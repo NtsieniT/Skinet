@@ -42,6 +42,13 @@ namespace Infrastructure.Data
         }
 
 
+        //  COunts returned items
+        public async Task<int> CountAsync(ISpecification<T> specification)
+        {
+            return await ApplySpecification(specification).CountAsync();
+        }
+
+
         // allow us to apply specifications
         private IQueryable<T> ApplySpecification(ISpecification<T> specification)
         {
@@ -49,5 +56,7 @@ namespace Infrastructure.Data
                 .GetQuery(_context.Set<T>().AsQueryable(), 
                           specification);
         }
+
+      
     }
 }
