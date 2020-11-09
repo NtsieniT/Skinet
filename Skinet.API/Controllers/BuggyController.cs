@@ -35,7 +35,7 @@ namespace Skinet.API.Controllers
         public ActionResult GetServerError()
         {
             var data = _context.Products.Find(42);
-
+            var thingToReturn = data.ToString();
 
             return Ok();
         }
