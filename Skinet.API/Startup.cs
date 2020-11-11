@@ -8,6 +8,7 @@ using AutoMapper;
 using Skinet.API.Helpers;
 using Skinet.API.Middleware;
 using Skinet.API.Extensions;
+using StackExchange.Redis;
 
 namespace Skinet.API
 {
@@ -28,6 +29,15 @@ namespace Skinet.API
             services.AddControllers();
             services.AddDbContext<StoreContext>(c =>
                                                 c.UseSqlServer(_configuration.GetConnectionString("DefaultConnection")));
+
+            // Setting up Redis.
+            // Redis is an in memory persistant database which we will use to store our shopping basket
+            services.AddSingleton<IConnectionMultiplexer>(c =>
+            {
+                var configuration = ConfigurationOptions.Parse(_configuration.GetConnectionString("Redis"), true);
+                return ConnectionMultiplexer.Connect(configuration);
+            });
+
 
             // Added extenstion to add all other services
             services.AddApplicationServices();
