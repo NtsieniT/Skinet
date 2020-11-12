@@ -9,6 +9,7 @@ using Skinet.API.Helpers;
 using Skinet.API.Middleware;
 using Skinet.API.Extensions;
 using StackExchange.Redis;
+using Infrastructure.Identity;
 
 namespace Skinet.API
 {
@@ -29,6 +30,9 @@ namespace Skinet.API
             services.AddControllers();
             services.AddDbContext<StoreContext>(c =>
                                                 c.UseSqlServer(_configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<AppIdentityDbContext>(x => 
+                                                x.UseSqlServer(_configuration.GetConnectionString("IdentityConnection")));
+
 
             // Setting up Redis.
             // Redis is an in memory persistant database which we will use to store our shopping basket
@@ -41,6 +45,7 @@ namespace Skinet.API
 
             // Added extenstion to add all other services
             services.AddApplicationServices();
+            services.AddIdentityServices(_configuration);
             services.AddAutoMapper(typeof(MappingProfiles));
             services.AddSwaggerDocumentation();
             services.AddCors(option =>
@@ -68,6 +73,8 @@ namespace Skinet.API
             app.UseStaticFiles();
 
             app.UseCors("CorsPolicy");
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

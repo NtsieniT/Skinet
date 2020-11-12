@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using infrastructure.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Skinet.API.Errors;
@@ -18,6 +19,12 @@ namespace Skinet.API.Controllers
             _context = context;
         }
 
+        [HttpGet("testauth")]
+        [Authorize]
+        public ActionResult<string> GetSecretText()
+        {
+            return "secret stuff";
+        }
 
         [HttpGet("not found")]
         public ActionResult GetNotFoundRequest()
