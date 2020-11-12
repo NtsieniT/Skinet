@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { IProduct } from './shared/models/products';
 import { HttpClient } from '@angular/common/http';
 import { IPagination } from './shared/models/pagination';
+import { BasketService } from './basket/basket.service';
 
 @Component({
   selector: 'app-root',
@@ -12,18 +13,19 @@ export class AppComponent {
   title = 'Skinet';
   products: IProduct[];
 
-  constructor(private http: HttpClient){}
+  constructor(private http: HttpClient, private basketService: BasketService){}
 
-  // tslint:disable-next-line:use-lifecycle-interface
+
   ngOnInit(): void {
-    this.http.get('https://localhost:5001/api/products?pageSize=50').subscribe(
-      (response: IPagination) => {
-        this.products = response.data;
-      },
-      error => {
+    const basketId = localStorage.getItem('basket_id');
+    if (basketId){
+      this.basketService.getBasket(basketId).subscribe(() => {
+        console.log('initialised basket');
+      }, error => {
         console.log(error);
       }
-    );
+      )
+    }
   }
 
 }

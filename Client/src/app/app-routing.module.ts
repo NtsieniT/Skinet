@@ -25,6 +25,11 @@ const routes: Routes = [
   loadChildren: () => import('./basket/basket.module')
   .then(mod => mod.BasketModule), data: {breadcrumb: 'basket'}},
 
+   // This below path will be used for lazy loading child components for the basket
+   {path: 'checkout',
+   loadChildren: () => import('./checkout/checkout.module')
+   .then(mod => mod.CheckoutModule), data: {breadcrumb: 'checkout'}},
+
   {path: '**', redirectTo: 'not-found', pathMatch: 'full'}
 ];
 
